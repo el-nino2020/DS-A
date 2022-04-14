@@ -7,7 +7,8 @@ public class Test {
     private static String choice;
 
     public static void main(String[] args) {
-        testSingleLinkedList();
+        //testSingleLinkedList();
+        testDoubleLinkedList();
     }
 
     public static void testSingleLinkedList() {
@@ -39,6 +40,38 @@ public class Test {
             }
         }
     }
+
+
+    public static void testDoubleLinkedList() {
+        /*
+                1:打印链表
+                2 x:添加x到链表末尾
+                3 x y:将第一个值为x的节点的值改为y
+                4 x:删除第一个值为x的节点
+
+         */
+        DoubleLinkedList dll = new DoubleLinkedList();
+        while (true) {
+            choice = scanner.next();
+            switch (choice) {
+                case "1":
+                    dll.show();
+                    break;
+                case "2":
+                    System.out.println(dll.add(scanner.nextInt()));
+                    break;
+
+                case "3":
+                    System.out.println(dll.replace(scanner.nextInt(), scanner.nextInt()));
+                    break;
+
+                case "4":
+                    System.out.println(dll.remove(scanner.nextInt()));
+                    break;
+            }
+        }
+    }
+
 }
 
 
