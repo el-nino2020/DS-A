@@ -11,7 +11,12 @@ public class Stack {
     }
 
     public boolean push(int val) {
-        if (isFull()) return false;
+        if (isFull()) {//自动扩容
+            int[] newArr = new int[capacity * 2];
+            System.arraycopy(arr, 0, newArr, 0, capacity);
+            arr = newArr;
+            capacity *= 2;
+        }
         ++top;
         arr[top] = val;
         return true;
@@ -22,6 +27,11 @@ public class Stack {
         Integer ans = arr[top];
         --top;
         return ans;
+    }
+
+    public Integer top() {
+        if (isEmpty()) return null;
+        return arr[top];
     }
 
     public boolean isFull() {

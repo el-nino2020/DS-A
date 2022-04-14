@@ -9,7 +9,7 @@ public class Test {
     }
 
     public static void testStack() {
-        Stack stack = new Stack(3);
+        Stack stack = new Stack(2);
 
         /*
         1:显示栈
