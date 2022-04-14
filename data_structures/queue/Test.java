@@ -1,15 +1,18 @@
 package data_structures.queue;
 
+import java.util.Deque;
+import java.util.Queue;
 import java.util.Scanner;
 
 @SuppressWarnings({"unused"})
 public class Test {
     public static void main(String[] args) {
-        testArrayQueue();
+        //testArrayQueue();
+        testCircleArrayQueue();
     }
 
     public static void testArrayQueue() {
-        ArrayQueue queue = new ArrayQueue(5);
+        ArrayQueue queue = new ArrayQueue(3);
 
         /*
         1:显示队列
@@ -17,6 +20,36 @@ public class Test {
         3：显示队列首元素
         4: 删除队列首元素
 
+        */
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String choice = scanner.next();
+            switch (choice) {
+                case "1":
+                    queue.show();
+                    break;
+                case "2":
+                    int i = scanner.nextInt();
+                    System.out.println(queue.add(i));
+                    break;
+                case "3":
+                    System.out.println(queue.peek());
+                    break;
+                case "4":
+                    System.out.println(queue.get());
+            }
+        }
+    }
+
+    public static void testCircleArrayQueue() {
+        CircleArrayQueue queue = new CircleArrayQueue(3);
+
+        /*
+        1:显示队列
+        2 x:将x加入队列
+        3：显示队列首元素
+        4: 删除队列首元素
         */
 
         Scanner scanner = new Scanner(System.in);
