@@ -2,7 +2,7 @@ package algorithms.sort;
 
 public class InsertionSort {
     public static void main(String[] args) {
-        int n = 5;
+        int n = 20000;
         int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
             arr[i] = (int) (Math.random() * n * 5);
