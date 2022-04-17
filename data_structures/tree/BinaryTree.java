@@ -63,4 +63,23 @@ public class BinaryTree {
         System.out.print(node.val + "\t");
 
     }
+
+    /**
+     * 查找二叉树中是否存在值为val的节点,
+     * 如果找到，返回该节点，否则返回null
+     */
+    public static Node search(Node node, int val) {
+        //以中序遍历为例来实现，其实三种遍历方式都差不多
+        if (node == null) return null;
+
+        if (node.val == val) return node;
+
+        Node node1 = search(node.left, val);
+        if (node1 != null) return node1;
+
+        Node node2 = search(node.right, val);
+        if (node2 != null) return node2;
+
+        return null;
+    }
 }
