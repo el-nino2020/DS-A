@@ -2,6 +2,9 @@ package data_structures.tree;
 
 public class Test {
 
+    /**
+     * 二叉树的前序、中序、后序遍历
+     */
     @org.junit.Test
     public void testTraverse() {
         BinaryTree.Node root = new BinaryTree.Node(1);
@@ -28,6 +31,9 @@ public class Test {
 
     }
 
+    /**
+     * 查找二叉树中的节点
+     */
     @org.junit.Test
     public void testSearch() {
         BinaryTree.Node root = new BinaryTree.Node(1);
@@ -54,6 +60,9 @@ public class Test {
 
     }
 
+    /**
+     * 对顺序存储二叉树进行遍历
+     */
     @org.junit.Test
     public void testArrayBinaryTreePreOrder() {
         BinaryTree.Node root = new BinaryTree.Node(1);
@@ -69,4 +78,26 @@ public class Test {
         int[] arr = {1, 2, 3, 4, 5, 6, 7};
         BinaryTree.preOrder(arr, 0);
     }
+
+    @org.junit.Test
+    public void testThreading() {
+        ThreadedBinaryTree.Node root = new ThreadedBinaryTree.Node(1);
+        root.left = new ThreadedBinaryTree.Node(2,
+                new ThreadedBinaryTree.Node(4), new ThreadedBinaryTree.Node(5));
+        root.right = new ThreadedBinaryTree.Node(3,
+                new ThreadedBinaryTree.Node(6), new ThreadedBinaryTree.Node(7));
+
+        /*
+        该二叉树中序遍历的结果为：
+        4	2	5	1	6	3	7
+        用debug功能查看是否线索化成功
+         */
+        ThreadedBinaryTree tree = new ThreadedBinaryTree(root);
+        tree.threading(2);
+
+        System.out.println("线索化完成");
+
+
+    }
+
 }
