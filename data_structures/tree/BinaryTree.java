@@ -82,4 +82,19 @@ public class BinaryTree {
 
         return null;
     }
+
+    /**
+     * 对二叉树进行前序遍历
+     *
+     * @param arr     以数组形式存储的二叉树
+     * @param current 当前节点的索引
+     */
+    public static void preOrder(int[] arr, int current) {
+        if (current >= arr.length || arr == null) return;
+
+        System.out.print(arr[current] + "\t");
+
+        preOrder(arr, 2 * current + 1);
+        preOrder(arr, 2 * current + 2);
+    }
 }

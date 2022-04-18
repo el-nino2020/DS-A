@@ -53,4 +53,20 @@ public class Test {
         System.out.println(flag ? "查找成功" : "查找失败");
 
     }
+
+    @org.junit.Test
+    public void testArrayBinaryTreePreOrder() {
+        BinaryTree.Node root = new BinaryTree.Node(1);
+        root.left = new BinaryTree.Node(2,
+                new BinaryTree.Node(4), new BinaryTree.Node(5));
+        root.right = new BinaryTree.Node(3,
+                new BinaryTree.Node(6), new BinaryTree.Node(7));
+        System.out.println("答案：");
+        BinaryTree.preOrder(root);
+        System.out.println();
+
+        System.out.println("待测试方法的回答：");
+        int[] arr = {1, 2, 3, 4, 5, 6, 7};
+        BinaryTree.preOrder(arr, 0);
+    }
 }
