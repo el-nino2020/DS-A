@@ -96,6 +96,8 @@ public class Test {
         tree.threading(2);
 
         System.out.println("线索化完成");
+        System.out.println("遍历的结果为：");
+        tree.threadedInOrder();
 
 
     }

@@ -89,5 +89,27 @@ public class ThreadedBinaryTree {
         }
     }
 
+    /**
+     * 利用线索化进行中序遍历
+     * 使用者需要确保这棵树是中序线索化的
+     */
+    public void threadedInOrder() {
+        Node node = root;
+        while (node != null) {
+            //左
+            while (node.leftType != 1) node = node.left;
+
+            while (node.rightType == 1) {
+                System.out.print(node.val + "\t");
+                node = node.right;
+            }
+
+            //中
+            System.out.print(node.val + "\t");
+            //右
+            node = node.right;
+        }
+    }
+
 
 }
