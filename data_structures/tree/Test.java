@@ -99,7 +99,21 @@ public class Test {
         System.out.println("遍历的结果为：");
         tree.threadedInOrder();
 
+    }
 
+    @org.junit.Test
+    public void testCreateHuffmanTree() {
+        int[] arr = {13, 7, 8, 3, 29, 6, 1};
+        HuffmanTree.Node tree = HuffmanTree.createHuffmanTree(arr);
+        /*
+        权值在树中各层的相对位置应该如下：（忽略非叶节点）
+        29
+        7 8  13
+        6
+        1 3
+         */
+
+        HuffmanTree.levelOrder(tree);
     }
 
 }
