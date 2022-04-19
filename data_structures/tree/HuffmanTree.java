@@ -2,31 +2,65 @@ package data_structures.tree;
 
 
 import java.util.ArrayDeque;
+import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 
+/**
+ * @version 1.1 更新Node内部类的定义，将数据与权重区分开来，方便生成赫夫曼编码
+ */
 public class HuffmanTree {
     //实现Comparable接口是为了方便排序
     public static class Node implements Comparable<Node> {
-        int val;
+        int weight;//节点的权重
+        Object data;//节点的数据信息
         Node left;
         Node right;
 
         public Node() {
         }
 
-        public Node(int val) {
-            this.val = val;
+        public Node(int weight) {
+            this.weight = weight;
         }
 
-        public Node(int val, Node left, Node right) {
-            this.val = val;
+        public Node(int weight, Node left, Node right) {
+            this.weight = weight;
             this.left = left;
             this.right = right;
         }
 
+        public Node(int weight, Object data, Node left, Node right) {
+            this.weight = weight;
+            this.data = data;
+            this.left = left;
+            this.right = right;
+        }
+
+        public Node(int weight, Object data) {
+            this.weight = weight;
+            this.data = data;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public Object getData() {
+            return data;
+        }
+
+        public Node getLeft() {
+            return left;
+        }
+
+        public Node getRight() {
+            return right;
+        }
+
         @Override
         public int compareTo(Node o) {
-            return this.val - o.val;
+            return this.weight - o.weight;
         }
     }
 
@@ -49,7 +83,36 @@ public class HuffmanTree {
         while (pq.size() != 1) {
             Node left = pq.poll();
             Node right = pq.poll();
-            Node node = new Node(left.val + right.val, left, right);
+            Node node = new Node(left.weight + right.weight, left, right);
+            pq.add(node);
+        }
+
+        return pq.poll();
+    }
+
+    /**
+     * @param info 每一个键值对可视作一个节点，键代表data，值代表weight
+     * @return 赫夫曼树的根节点
+     * 该方法为@version 1.1 中新增添的
+     */
+    public static Node createHuffmanTree(Map<?, Integer> info) {
+        if (info == null || info.isEmpty()) return null;
+
+        Set<?> set = info.keySet();
+
+        //也可以自己实现一个堆，来代替java.util.PriorityQueue
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+
+
+        for (Object key : set) {
+            pq.add(new Node(info.get(key), key));
+
+        }
+
+        while (pq.size() != 1) {
+            Node left = pq.poll();
+            Node right = pq.poll();
+            Node node = new Node(left.weight + right.weight, left, right);
             pq.add(node);
         }
 
@@ -60,7 +123,8 @@ public class HuffmanTree {
      * 对赫夫曼树进行层序遍历：
      * 打印叶节点的值（权值），但用 * 代替非叶节点的值。
      * 对于赫夫曼树来说，重点在于权值在树的哪一层，
-     *  而权值和 * 的相对关系是无所谓的
+     * 而权值和 * 的相对关系是无所谓的
+     *
      * @param node 赫夫曼树的根节点
      */
     public static void levelOrder(Node node) {
@@ -77,7 +141,7 @@ public class HuffmanTree {
                     deque.addLast(cur.left);
                     deque.addLast(cur.right);
                 } else {
-                    System.out.print(cur.val + "\t");
+                    System.out.print(cur.weight + "\t");
                 }
             }
             System.out.println();
