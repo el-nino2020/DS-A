@@ -1,5 +1,9 @@
 package data_structures.tree;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+
 public class Test {
 
     /**
@@ -114,6 +118,71 @@ public class Test {
          */
 
         HuffmanTree.levelOrder(tree);
+    }
+
+    @org.junit.Test
+    public void testBST() {
+        BinarySortTree bst = new BinarySortTree();
+        HashSet<Integer> set = new HashSet<>();
+        int n = 2000;
+
+        for (int i = 0; i < n; i++) {
+            int t = (int) (Math.random() * n * 5);
+            bst.add(t);
+            set.add(t);
+        }
+        List<Integer> list = bst.inOrder();
+        boolean flag = true;
+
+        //利用中序遍历BST的结果是升序的这一性质验证BST构建的正确性
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                flag = false;
+                break;
+            }
+        }
+        //查看是否添加成功
+        for (Integer integer : set) {
+            if (!bst.exists(integer)) {
+                flag = false;
+                break;
+            }
+        }
+        System.out.println(flag ? "添加成功" : "添加失败");
+
+
+        for (int i = 0; i < n / 2; i++) {
+            int t = (int) (Math.random() * n * 5);
+            set.remove(t);
+            bst.remove(t);
+        }
+
+        list = bst.inOrder();
+        flag = true;
+
+        //删除后BST的性质是否依旧？
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                flag = false;
+                break;
+            }
+        }
+        //查看删除是否成功
+        for (Integer integer : set) {
+            if (!bst.exists(integer)) {
+                flag = false;
+                break;
+            }
+        }
+        //将所有节点删光
+        for (Integer integer : set) {
+            bst.remove(integer);
+        }
+
+        if (bst.inOrder().size() != 0) flag = false;
+
+        System.out.println(flag ? "删除成功" : "删除失败");
+
     }
 
 }
