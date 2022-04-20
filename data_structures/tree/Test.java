@@ -122,9 +122,11 @@ public class Test {
 
     @org.junit.Test
     public void testBST() {
+        long start = System.currentTimeMillis();
+
         BinarySortTree bst = new BinarySortTree();
         HashSet<Integer> set = new HashSet<>();
-        int n = 2000;
+        int n = 2000000;
 
         for (int i = 0; i < n; i++) {
             int t = (int) (Math.random() * n * 5);
@@ -183,6 +185,98 @@ public class Test {
 
         System.out.println(flag ? "删除成功" : "删除失败");
 
+        long end = System.currentTimeMillis();
+        System.out.println("对容量上限为" + n + "的BST进行处理和检验花费" + (end - start) + "毫秒");
+    }
+
+
+    /**
+     * 如果加入的数据是随机分布的，int t = (int) (Math.random() * n * 5);
+     * 那么效率与BST类似
+     * 尝试加入单调的数据，再与BST比较，如 int t =i；
+     * 那么AVL运行效率很高，而BST会产生java.lang.StackOverflowError
+     */
+    @org.junit.Test
+    public void testAVL() {
+        long start = System.currentTimeMillis();
+
+
+        AVLTree avl = new AVLTree();
+        HashSet<Integer> set = new HashSet<>();
+        int n = 2000000;
+
+        for (int i = 0; i < n; i++) {
+            int t = (int) (Math.random() * n * 5);
+            avl.add(t);
+            set.add(t);
+//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+//                System.out.println("没有自平衡，这不是一棵AVL");
+//                return;
+//            }
+        }
+        List<Integer> list = avl.inOrder();
+        boolean flag = true;
+
+        //利用中序遍历BST的结果是升序的这一性质验证BST构建的正确性
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                flag = false;
+                break;
+            }
+        }
+        //查看是否添加成功
+        for (Integer integer : set) {
+            if (!avl.exists(integer)) {
+                flag = false;
+                break;
+            }
+        }
+        System.out.println(flag ? "添加成功" : "添加失败");
+
+
+        for (int i = 0; i < n / 2; i++) {
+            int t = (int) (Math.random() * n * 5);
+            set.remove(t);
+            avl.remove(t);
+//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+//                System.out.println("没有自平衡，这不是一棵AVL");
+//                return;
+//            }
+        }
+
+        list = avl.inOrder();
+        flag = true;
+
+        //删除后BST的性质是否依旧？
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i) > list.get(i + 1)) {
+                flag = false;
+                break;
+            }
+        }
+        //查看删除是否成功
+        for (Integer integer : set) {
+            if (!avl.exists(integer)) {
+                flag = false;
+                break;
+            }
+        }
+        //将所有节点删光
+        for (Integer integer : set) {
+            avl.remove(integer);
+//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+//                System.out.println("没有自平衡，这不是一棵AVL");
+//                return;
+//            }
+        }
+
+        if (avl.inOrder().size() != 0) flag = false;
+
+        System.out.println(flag ? "删除成功" : "删除失败");
+
+        long end = System.currentTimeMillis();
+        //可以同时运行testBST方法进行比较
+        System.out.println("对容量上限为" + n + "的AVL进行处理和检验花费" + (end - start) + "毫秒");
     }
 
 }

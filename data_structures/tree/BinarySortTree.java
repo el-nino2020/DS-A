@@ -19,6 +19,10 @@ public class BinarySortTree {
 
     private Node root;
 
+    protected Node getRoot() {
+        return root;
+    }
+
     public BinarySortTree() {
     }
 
@@ -36,7 +40,7 @@ public class BinarySortTree {
     /**
      * @return 以node为根节点的BST中，节点中最小值
      */
-    private Integer min(Node node) {
+    protected Integer min(Node node) {
         if (node == null) return null;
         //BST最左边的节点一定是值最小的
         while (node.left != null) node = node.left;
@@ -56,7 +60,7 @@ public class BinarySortTree {
      *
      * @return 添加后的BST的根节点
      */
-    private Node add(int val, Node node) {
+    protected Node add(int val, Node node) {
         if (node == null) {
             return new Node(val);
         } else if (val < node.val) {
@@ -95,7 +99,7 @@ public class BinarySortTree {
         root = remove(root, val);
     }
 
-    private Node remove(Node node, int val) {
+    protected Node remove(Node node, int val) {
         if (node == null) {//删除的节点不存在
             return null;
         } else if (val < node.val) {
