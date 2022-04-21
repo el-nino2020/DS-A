@@ -31,7 +31,8 @@ public class BinarySearch {
      * @return val在arr中的索引，如果不存在，返回-1
      */
     public static int search(int[] arr, int val) {
-        return search(arr, val, 0, arr.length - 1);
+        //return search(arr, val, 0, arr.length - 1);//递归二分查找
+        return search(val, arr);//非递归二分查找
     }
 
 
@@ -65,7 +66,17 @@ public class BinarySearch {
      * @return val在arr中的索引，如果不存在，返回-1
      */
     public static int search(int val, int[] arr) {
-        //这个方法留待以后实现
-        return 0;
+        int left = 0, right = arr.length - 1, mid;
+        while (left <= right) {
+            mid = (left + right) >> 1;
+            if (val > arr[mid]) {
+                left = mid + 1;
+            } else if (val == arr[mid]) {
+                return mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return -1;
     }
 }
