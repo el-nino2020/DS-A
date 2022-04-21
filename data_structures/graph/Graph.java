@@ -2,6 +2,7 @@ package data_structures.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @param <D> 节点中数据的类型
@@ -34,6 +35,8 @@ public class Graph<D> {
     private int[][] edges;//邻接矩阵
 
     public Graph(int size) {
+        if (size <= 0) size = 5;
+
         this.size = size;
         vertices = new ArrayList<>(size);
         edges = new int[size][size];
@@ -117,7 +120,7 @@ public class Graph<D> {
         System.out.print("\t");
         System.out.println(vertices);
         for (int j = 0; j < size; ++j) {
-            System.out.print(vertices.get(j)+"\t\t");
+            System.out.print(vertices.get(j) + "\t\t");
             int[] line = edges[j];
 
             for (int i : line) {
@@ -126,6 +129,32 @@ public class Graph<D> {
             System.out.println();
         }
 
+    }
+
+    public static List<Vertex<?>> DFS(Graph<?> graph, int index) {
+        if (graph == null || index < 0 || index >= graph.size) return null;
+
+        ArrayList<Vertex<?>> ans = new ArrayList<>();
+        boolean[] visited = new boolean[graph.size];
+
+        DFS(graph, index, ans, visited);
+
+        return ans;
+    }
+
+    private static void DFS(Graph<?> graph, int index,
+                            List<Vertex<?>> record, boolean[] visited) {
+        visited[index] = true;
+        record.add(graph.vertices.get(index));
+
+        int[] line = graph.edges[index];//索引为index的节点的所有邻居
+
+        for (int i = 0; i < graph.size; i++) {
+            int connected = line[i];
+            if (connected != 0 && !visited[i]) {
+                DFS(graph, i, record, visited);
+            }
+        }
 
     }
 
