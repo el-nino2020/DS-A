@@ -1,5 +1,7 @@
 package data_structures.graph;
 
+import data_structures.queue.CircleArrayQueue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -156,6 +158,32 @@ public class Graph<D> {
             }
         }
 
+    }
+
+    public static List<Vertex<?>> BFS(Graph<?> graph, int index) {
+        if (graph == null || index < 0 || index >= graph.size) return null;
+
+        ArrayList<Vertex<?>> ans = new ArrayList<>();
+        boolean[] visited = new boolean[graph.size];
+
+        //不想自己写一个Queue就用java.util.ArrayDeque
+        CircleArrayQueue queue = new CircleArrayQueue(graph.size);
+        queue.add(index);
+
+        while (!queue.isEmpty()) {
+            int cur = queue.get();
+            visited[cur] = true;
+            ans.add(graph.vertices.get(cur));
+
+            int[] line = graph.edges[cur];
+            for (int i = 0; i < graph.size; i++) {
+                if (line[i] != 0 && !visited[i]) {
+                    queue.add(i);
+                }
+            }
+        }
+
+        return ans;
     }
 
 }
