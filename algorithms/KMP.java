@@ -71,7 +71,9 @@ public class KMP {
         char[] text = s.toCharArray();
         char[] pattern = target.toCharArray();
 
+        //text length        pattern length
         int tl = s.length(), pl = target.length();
+
         int[] lps = longestPrefixSuffix(target);
 
         for (int i = 0, j = 0; i < tl; ++i) {
