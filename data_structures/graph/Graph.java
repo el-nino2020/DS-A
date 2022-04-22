@@ -1,5 +1,6 @@
 package data_structures.graph;
 
+import data_structures.linked_list.DoubleLinkedList;
 import data_structures.queue.CircleArrayQueue;
 
 import java.util.ArrayList;
@@ -34,17 +35,20 @@ public class Graph<D> {
 
     private ArrayList<Vertex<D>> vertices;
     private final int size;
-    private int[][] edges;//邻接矩阵
+    private int[][] adjMatrix;//邻接矩阵
+    private DoubleLinkedList[] adjList;//邻接表
 
     public Graph(int size) {
         if (size <= 0) size = 5;
 
         this.size = size;
         vertices = new ArrayList<>(size);
-        edges = new int[size][size];
+        adjMatrix = new int[size][size];
+        adjList = new DoubleLinkedList[size];
 
         for (int i = 0; i < size; i++) {
             vertices.add(new Vertex<D>(i));
+            adjList[i] = new DoubleLinkedList();
 
         }
     }
@@ -70,10 +74,27 @@ public class Graph<D> {
         if (from < 0 || from >= size) return false;
         if (to < 0 || to >= size) return false;
 
-        edges[from][to] = weight;
-        if (!directed)
-            edges[to][from] = weight;
+        adjMatrix[from][to] = weight;
+        adjList[from].add(to);
+        if (!directed) {
+            adjList[to].add(from);
+            adjMatrix[to][from] = weight;
+        }
         return true;
+    }
+
+    /**
+     * 添加一条从from到to的无向边，权重为1
+     */
+    public boolean addEdge(int from, int to) {
+        return addEdge(from, to, 1, false);
+    }
+
+    /**
+     * 添加一条从from到to的无向边，权重为weight
+     */
+    public boolean addEdge(int from, int to, int weight) {
+        return addEdge(from, to, weight, false);
     }
 
     /**
@@ -84,17 +105,21 @@ public class Graph<D> {
     public boolean removeEdge(int from, int to) {
         if (from < 0 || from >= size) return false;
         if (to < 0 || to >= size) return false;
-        edges[from][to] = 0;
+        adjMatrix[from][to] = 0;
+        adjList[from].remove(to);
         return true;
     }
 
-
     /**
-     * 添加一条从from到to的无向边，权重为1
+     *
+     * @param index
+     * @return 索引为index的所有邻居
      */
-    public boolean addEdge(int from, int to) {
-        return addEdge(from, to, 1, false);
+    public DoubleLinkedList getOneList(int index) {
+        if (index < 0 || index >= size) return null;
+        return adjList[index];
     }
+
 
     /**
      * @return 图的节点数
@@ -115,7 +140,7 @@ public class Graph<D> {
      * 返回从from 到to 的边的权重
      */
     public int getWeight(int from, int to) {
-        return edges[from][to];
+        return adjMatrix[from][to];
     }
 
     public void showGraph() {
@@ -123,7 +148,7 @@ public class Graph<D> {
         System.out.println(vertices);
         for (int j = 0; j < size; ++j) {
             System.out.print(vertices.get(j) + "\t\t");
-            int[] line = edges[j];
+            int[] line = adjMatrix[j];
 
             for (int i : line) {
                 System.out.print(i + "\t");
@@ -149,7 +174,7 @@ public class Graph<D> {
         visited[index] = true;
         record.add(graph.vertices.get(index));
 
-        int[] line = graph.edges[index];//索引为index的节点的所有邻居
+        int[] line = graph.adjMatrix[index];//索引为index的节点的所有邻居
 
         for (int i = 0; i < graph.size; i++) {
             int connected = line[i];
@@ -175,7 +200,7 @@ public class Graph<D> {
             visited[cur] = true;
             ans.add(graph.vertices.get(cur));
 
-            int[] line = graph.edges[cur];
+            int[] line = graph.adjMatrix[cur];
             for (int i = 0; i < graph.size; i++) {
                 if (line[i] != 0 && !visited[i]) {
                     queue.add(i);

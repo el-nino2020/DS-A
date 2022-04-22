@@ -22,12 +22,14 @@ public class DoubleLinkedList {
 
     Node head;//head->next为双向链表的第一个节点
     Node tail;//tail->prev为双向链表的最后一个节点
+    Node cur;//用于迭代
 
     public DoubleLinkedList() {
         head = new Node();
         tail = new Node();
         head.next = tail;
         tail.prev = head;
+        cur = head;
     }
 
     /**
@@ -79,6 +81,21 @@ public class DoubleLinkedList {
         }
         return false;
     }
+
+    //以下三个方法实现了一个简易的迭代器功能
+    public boolean hasNext() {
+        return cur.next != tail;
+    }
+
+    public int next() {
+        cur = cur.next;
+        return cur.val;
+    }
+
+    public void resetNext() {
+        cur = head;
+    }
+
 
     /**
      * 打印链表
