@@ -51,6 +51,12 @@ public class Graph<D> {
             adjList[i] = new DoubleLinkedList();
 
         }
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                adjMatrix[i][j] = Integer.MAX_VALUE;
+            }
+        }
     }
 
     public boolean setVertexData(int index, D item) {
@@ -111,7 +117,6 @@ public class Graph<D> {
     }
 
     /**
-     *
      * @param index
      * @return 索引为index的所有邻居
      */
@@ -208,6 +213,17 @@ public class Graph<D> {
             }
         }
 
+        return ans;
+    }
+
+    /**
+     * @return copy of the adjacent matrix
+     */
+    public int[][] getCopyOfAdjMatrix() {
+        int[][] ans = new int[size][];
+        for (int i = 0; i < size; i++) {
+            ans[i] = Arrays.copyOf(adjMatrix[i], size);
+        }
         return ans;
     }
 
