@@ -35,9 +35,11 @@ public class Dijkstra {
 
         //构建Graph对象完毕
 
-        int start = 2;
-        int[][] ans = solve(graph, start);
-        printAns(ans, chars, start);
+
+        for (int start = 0; start < vertices.size(); start++) {
+            int[][] ans = solve(graph, start);
+            printAns(ans, chars, start);
+        }
 
     }
 
@@ -107,6 +109,9 @@ public class Dijkstra {
         int[] dist = ans[0];
         int[] prev = ans[1];
 
+
+        System.out.println("===================================");
+        System.out.println("出发点为 " + chars[start] + ":");
         for (int i = 0; i < dist.length; i++) {
             System.out.print(chars[i] + "->" + chars[start] +
                     "最短距离为" + dist[i] + "\t : ");
@@ -118,5 +123,7 @@ public class Dijkstra {
             System.out.println(chars[start]);
         }
         System.out.println("打印完毕");
+        System.out.println("===================================");
+
     }
 }
