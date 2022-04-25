@@ -6,7 +6,8 @@
 - realize various data structures & algorithms in Java
 
 # 学习使用的笔记(Notes)
-1. Ver1.0：https://github.com/el-nino2020/note-of-learning/blob/main/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%20Ver1.0%20.md
+1. [Ver1.0](https://github.com/el-nino2020/note-of-learning/blob/main/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%20Ver1.0%20.md)
+2. 
 
 
 # 数据结构(Data Structures)
