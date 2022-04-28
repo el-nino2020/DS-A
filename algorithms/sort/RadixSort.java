@@ -41,7 +41,6 @@ public class RadixSort {
             for (int j = 1; j < 10; j++) {
                 buckets[j] += buckets[j - 1];
             }
-            int x = 0;
             //重新排序
             for (int j = n - 1; j >= 0; j--) {
                 int bit = arr[j] / t % 10;
@@ -67,7 +66,6 @@ public class RadixSort {
      * @return arr数组中最大元素的(Dec)位数
      */
     public static int maxBits(int[] arr) {
-        int n = arr.length;
         int max = Integer.MIN_VALUE;
 
         for (int i : arr) {
