@@ -172,7 +172,7 @@ public class AVLTreeList<T> {
      */
     private Node<T> add(Node<T> node, T t) {
         if (node == null) {
-            return new Node<T>(t);
+            return new Node<>(t);
         }
         node.right = add(node.right, t);
         updateSubtreeProperty(node);
@@ -180,6 +180,50 @@ public class AVLTreeList<T> {
 
         return node;
     }
+
+
+    /**
+     * 返回索引 index 处的元素
+     *
+     * @param index 元素在List中的索引
+     * @throws IndexOutOfBoundsException index越界
+     */
+    public T get(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+        return get(root, index).val;
+    }
+
+    /**
+     * 将索引 index 处的元素设置为newVal
+     *
+     * @param index 元素在List中的索引
+     * @return index处原先的元素
+     * @throws IndexOutOfBoundsException index越界
+     */
+    public T set(int index, T newVal) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+
+        Node<T> node = get(root, index);
+        T ans = node.val;
+        node.val = newVal;
+        return ans;
+    }
+
+    /**
+     * 返回在以node为根节点的二叉树中，中序遍历第index个的节点
+     */
+    private Node<T> get(Node<T> node, int index) {
+        if (index == Node.leftTreeSize(node)) {
+            return node;
+        } else if (index < Node.leftTreeSize(node)) {
+            return get(node.left, index);
+        } else {
+            return get(node.right, index - Node.leftTreeSize(node) - 1);
+        }
+    }
+
 
     /**
      * 顺序遍历每个元素

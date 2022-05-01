@@ -1,6 +1,5 @@
 package data_structures.tree;
 
-import data_structures.linked_list.DoubleLinkedList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -284,8 +283,8 @@ public class Test {
 
     @org.junit.Test
     public void testAVLList() {
-        int opCount = 1;//  AVLTreeList支持的List方法数量
-        int n = 20000;
+        int opCount = 3;//  AVLTreeList支持的List方法数量
+        int n = 40000;
 
         ArrayList<Integer> arrayList = new ArrayList<>();
         AVLTreeList<Integer> AVLList = new AVLTreeList<>();
@@ -297,8 +296,27 @@ public class Test {
                 int val = (int) (Math.random() * n);
                 arrayList.add(val);
                 AVLList.add(val);
-            } else {
+            } else if (d < 2 / (double) opCount) {//get
+                int size = arrayList.size();
+                if (size == 0) continue;
 
+                int index = (int) (Math.random() * size);
+
+                Integer i1 = arrayList.get(index);
+                Integer i2 = AVLList.get(index);
+
+                if (!i1.equals(i2)) {
+                    System.out.println("AVL 实现 List失败");
+                    return;
+                }
+            } else if (d < 3 / (double) opCount) {//set
+                int size = arrayList.size();
+                if (size == 0) continue;
+
+                int index = (int) (Math.random() * size);
+                int val = (int) (Math.random() * n);
+                arrayList.set(index, val);
+                AVLList.set(index, val);
             }
 
 
@@ -317,12 +335,14 @@ public class Test {
 
     //人工测试某个数据结构
     @org.junit.Test
-    public void manualTest(){
+    public void manualTest() {
         AVLTreeList<Integer> list = new AVLTreeList<>();
         list.add(1);
         list.add(2);
         list.add(3);
         list.add(4);
+
+        list.get(2);
 
         System.out.println(list.getList());
     }
