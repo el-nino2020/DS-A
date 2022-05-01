@@ -1,5 +1,8 @@
 package data_structures.tree;
 
+import data_structures.linked_list.DoubleLinkedList;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -276,6 +279,52 @@ public class Test {
         long end = System.currentTimeMillis();
         //可以同时运行testBST方法进行比较
         System.out.println("对容量上限为" + n + "的AVL进行处理和检验花费" + (end - start) + "毫秒");
+    }
+
+
+    @org.junit.Test
+    public void testAVLList() {
+        int opCount = 1;//  AVLTreeList支持的List方法数量
+        int n = 20000;
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        AVLTreeList<Integer> AVLList = new AVLTreeList<>();
+
+        for (int i = 0; i < n; i++) {
+            double d = Math.random();
+
+            if (d < 1 / (double) opCount) {//add
+                int val = (int) (Math.random() * n);
+                arrayList.add(val);
+                AVLList.add(val);
+            } else {
+
+            }
+
+
+            //校验方法是否成功实现
+            if (!arrayList.equals(AVLList.getList())) {
+                System.out.println("AVL 实现 List失败");
+                return;
+            }
+
+
+        }
+
+        System.out.println("AVL 实现 List成功");
+
+    }
+
+    //人工测试某个数据结构
+    @org.junit.Test
+    public void manualTest(){
+        AVLTreeList<Integer> list = new AVLTreeList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+
+        System.out.println(list.getList());
     }
 
 }
