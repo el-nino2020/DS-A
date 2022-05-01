@@ -2,7 +2,6 @@ package data_structures.tree;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 public class Test {
 
@@ -197,22 +196,22 @@ public class Test {
      * 那么AVL运行效率很高，而BST会产生java.lang.StackOverflowError
      */
     @org.junit.Test
-    public void testAVL() {
+    public void testAVLMap() {
         long start = System.currentTimeMillis();
 
 
-        AVLTree avl = new AVLTree();
+        AVLTreeMap avl = new AVLTreeMap();
         HashSet<Integer> set = new HashSet<>();
-        int n = 2000000;
+        int n = 20000;
 
         for (int i = 0; i < n; i++) {
             int t = (int) (Math.random() * n * 5);
             avl.add(t);
             set.add(t);
-//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
-//                System.out.println("没有自平衡，这不是一棵AVL");
-//                return;
-//            }
+            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+                System.out.println("没有自平衡，这不是一棵AVL");
+                return;
+            }
         }
         List<Integer> list = avl.inOrder();
         boolean flag = true;
@@ -238,10 +237,10 @@ public class Test {
             int t = (int) (Math.random() * n * 5);
             set.remove(t);
             avl.remove(t);
-//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
-//                System.out.println("没有自平衡，这不是一棵AVL");
-//                return;
-//            }
+            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+                System.out.println("没有自平衡，这不是一棵AVL");
+                return;
+            }
         }
 
         list = avl.inOrder();
@@ -264,10 +263,10 @@ public class Test {
         //将所有节点删光
         for (Integer integer : set) {
             avl.remove(integer);
-//            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
-//                System.out.println("没有自平衡，这不是一棵AVL");
-//                return;
-//            }
+            if (!avl.isAVL()) {//与BST比较运行速度时不应该加入该语句
+                System.out.println("没有自平衡，这不是一棵AVL");
+                return;
+            }
         }
 
         if (avl.inOrder().size() != 0) flag = false;

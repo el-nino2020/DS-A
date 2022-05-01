@@ -8,6 +8,7 @@ public class BinarySortTree {
         int val;
         Node left;
         Node right;
+//        Object item;//BST本质上实现了Map接口
 
         public Node() {
         }

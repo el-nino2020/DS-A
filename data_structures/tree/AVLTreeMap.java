@@ -2,7 +2,10 @@ package data_structures.tree;
 
 import data_structures.tree.BinarySortTree;
 
-public class AVLTree extends BinarySortTree {
+/**
+ * 使用AVL实现Map接口
+ */
+public class AVLTreeMap extends BinarySortTree {
 
     public static class AVLNode extends Node {
         public AVLNode() {
@@ -16,10 +19,10 @@ public class AVLTree extends BinarySortTree {
     }
 
 
-    public AVLTree() {
+    public AVLTreeMap() {
     }
 
-    public AVLTree(AVLNode root) {
+    public AVLTreeMap(AVLNode root) {
         super(root);
     }
 
@@ -149,7 +152,7 @@ public class AVLTree extends BinarySortTree {
                 return node.right;
             }
         }
-
+        ((AVLNode) node).height = Math.max(height((AVLNode) node.left), height((AVLNode) node.right)) + 1;
         node = balance((AVLNode) node);
 
         return node;
