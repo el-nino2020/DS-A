@@ -1,9 +1,8 @@
-package algorithms.shortest_path;
+package algorithms.graph.shortest_path;
 
 import data_structures.graph.Graph;
 
 import java.util.HashSet;
-import java.util.function.DoubleToIntFunction;
 
 public class Floyd {
 

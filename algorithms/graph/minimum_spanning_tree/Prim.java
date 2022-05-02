@@ -1,4 +1,4 @@
-package algorithms.minimum_spanning_tree;
+package algorithms.graph.minimum_spanning_tree;
 
 import data_structures.graph.Graph;
 import data_structures.linked_list.DoubleLinkedList;

@@ -70,11 +70,13 @@
 7. KMP算法
 8. 贪心算法 greedy algorithm
     - 集合覆盖问题 set covering problem, SCP
-9. 最小生成树 minimum spanning tree
-    - Prim
-    - Kruskal
-10. 最短路径 shortest path
-    - Dijkstra
-    - Floyd    
+9. 图 graph algorithm
+    1. 最小生成树 minimum spanning tree
+        - Prim
+        - Kruskal
+    2. 最短路径 shortest path
+        - Dijkstra
+        - Floyd    
+    3. 拓扑排序 topological sort
     
 

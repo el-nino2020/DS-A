@@ -1,4 +1,4 @@
-package algorithms.shortest_path;
+package algorithms.graph.shortest_path;
 
 import data_structures.graph.Graph;
 import data_structures.linked_list.DoubleLinkedList;

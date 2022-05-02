@@ -1,4 +1,4 @@
-package algorithms.minimum_spanning_tree;
+package algorithms.graph.minimum_spanning_tree;
 
 import java.util.Arrays;
 import java.util.Comparator;
