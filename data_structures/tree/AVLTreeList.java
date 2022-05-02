@@ -1,5 +1,6 @@
 package data_structures.tree;
 
+import javax.xml.bind.annotation.XmlIDREF;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -156,20 +157,62 @@ public class AVLTreeList<T> {
 
     /**
      * 添加元素到序列最后
+     * 时间复杂度为O(log(n))
      *
-     * @param t
+     * @param t 要添加的元素
      */
     public void add(T t) {
-        root = add(root, t);
+        add(size, t);
+    }
+
+
+    /**
+     * 添加元素到指定索引，当前索引及其往后的元素会被后移
+     *
+     * @param index 要插入的索引
+     * @param t     要插入的元素
+     * @throws IndexOutOfBoundsException index的范围为 0 <= index && index <= size
+     */
+    public void add(int index, T t) throws IndexOutOfBoundsException {
+        if (index < 0 || index > size)
+            throw new IndexOutOfBoundsException();
+
+        root = add(root, t, index);
         ++size;
+    }
+
+
+    /**
+     * 在以node为根节点的二叉树中插入t，位置为中序遍历的第index个
+     * 这个方法的实现参考了
+     * https://www.nayuki.io/res/avl-tree-list/AvlTreeList.java
+     * 中的insertAt方法
+     *
+     * @param node  待插入元素的二叉树的根节点
+     * @param t     待插入的元素
+     * @param index 对应新的元素在二叉树中序遍历的位置
+     * @return 插入元素后二叉树的新的根节点
+     */
+    private Node<T> add(Node<T> node, T t, int index) {
+        if (node == null) {
+            return new Node<>(t);
+        } else if (index <= Node.leftTreeSize(node)) {
+            node.left = add(node.left, t, index);
+        } else {
+            node.right = add(node.right, t, index - Node.leftTreeSize(node) - 1);
+        }
+        updateSubtreeProperty(node);
+        node = balance(node);
+        return node;
     }
 
     /**
      * 递归实现添加元素到序列最后的操作
      *
-     * @param node
-     * @param t
+     * @param node 插入到以node为根节点的子树的最右端
+     * @param t    要插入的元素
      */
+    @Deprecated
     private Node<T> add(Node<T> node, T t) {
         if (node == null) {
             return new Node<>(t);
@@ -181,9 +224,57 @@ public class AVLTreeList<T> {
         return node;
     }
 
+    /**
+     * 根据索引删除元素，并返回该元素
+     *
+     * @param index 要删除的元素所在的索引
+     * @return 删除的索引处的元素
+     * @throws IndexOutOfBoundsException index的范围为 0 <= index && index < size
+     */
+    public T remove(int index) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+
+        T oldVal = get(index);
+        root = remove(root, index);
+        --size;
+
+        return oldVal;
+    }
+
+    /**
+     * 删除以node为根节点的树中中序遍历第index个的节点
+     *
+     * @param node  树的根节点
+     * @param index 要删除的节点在中序遍历中的位置
+     * @return 删除后新的根节点
+     */
+    private Node<T> remove(Node<T> node, int index) {
+        if (index == Node.leftTreeSize(node)) {
+            if (node.left != null && node.right != null) {//有两个子节点
+                node.val = get(node.right, 0).val;//(右子树中的第一个节点，即第index + 1个元素)
+                node.right = remove(node.right, 0);
+            } else if (node.left != null) {//只有左子节点
+                return node.left;
+            } else if (node.right != null) {//只有右子节点
+                return node.right;
+            } else {//没有子节点——当前节点为叶子结点
+                return null;
+            }
+        } else if (index < Node.leftTreeSize(node)) {
+            node.left = remove(node.left, index);
+        } else {
+            node.right = remove(node.right, index - Node.leftTreeSize(node) - 1);
+        }
+
+        updateSubtreeProperty(node);
+        node = balance(node);
+        return node;
+    }
 
     /**
      * 返回索引 index 处的元素
+     * 时间复杂度为O(log(n))
      *
      * @param index 元素在List中的索引
      * @throws IndexOutOfBoundsException index越界
@@ -196,6 +287,7 @@ public class AVLTreeList<T> {
 
     /**
      * 将索引 index 处的元素设置为newVal
+     * 时间复杂度为O(log(n))
      *
      * @param index 元素在List中的索引
      * @return index处原先的元素
@@ -212,7 +304,8 @@ public class AVLTreeList<T> {
     }
 
     /**
-     * 返回在以node为根节点的二叉树中，中序遍历第index个的节点
+     * 返回在以node为根节点的二叉树中，中序遍历第index个的节点,
+     * 时间复杂度为O(log(n))
      */
     private Node<T> get(Node<T> node, int index) {
         if (index == Node.leftTreeSize(node)) {
@@ -266,5 +359,24 @@ public class AVLTreeList<T> {
 
     public int getSize() {
         return size;
+    }
+
+    /**
+     * @return 这棵树是否具有AVL的性质
+     */
+    boolean isAVL() {
+        return isAVL(root);
+    }
+
+
+    /**
+     * 检验以node为根节点的树是否为一棵AVL树
+     */
+    private boolean isAVL(Node node) {
+        if (node == null) return true;
+        //node是一棵AVL树
+        return (Math.abs(Node.height(node.left) - Node.height(node.right)) <= 1)
+                && isAVL(node.left) //它的子树也是AVL树
+                && isAVL(node.right);
     }
 }

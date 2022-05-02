@@ -1,9 +1,7 @@
 package data_structures.tree;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Test {
 
@@ -283,20 +281,23 @@ public class Test {
 
     @org.junit.Test
     public void testAVLList() {
-        int opCount = 3;//  AVLTreeList支持的List方法数量
-        int n = 40000;
+        int opCount = 5;//  AVLTreeList支持的List方法数量
+        int n = 30000;
 
         ArrayList<Integer> arrayList = new ArrayList<>();
         AVLTreeList<Integer> AVLList = new AVLTreeList<>();
+        ArrayList<String> record = new ArrayList<>();//记录所有行为
 
+        boolean control = true;
         for (int i = 0; i < n; i++) {
             double d = Math.random();
 
-            if (d < 1 / (double) opCount) {//add
+            if (control && d < 1 / (double) opCount) {//add(t)
                 int val = (int) (Math.random() * n);
                 arrayList.add(val);
                 AVLList.add(val);
-            } else if (d < 2 / (double) opCount) {//get
+                record.add(String.format("list.add(%d);", val));
+            } else if (control && d < 2 / (double) opCount) {//get
                 int size = arrayList.size();
                 if (size == 0) continue;
 
@@ -304,12 +305,14 @@ public class Test {
 
                 Integer i1 = arrayList.get(index);
                 Integer i2 = AVLList.get(index);
+                record.add(String.format("list.get(%d);", index));
+
 
                 if (!i1.equals(i2)) {
                     System.out.println("AVL 实现 List失败");
                     return;
                 }
-            } else if (d < 3 / (double) opCount) {//set
+            } else if (control && d < 3 / (double) opCount) {//set
                 int size = arrayList.size();
                 if (size == 0) continue;
 
@@ -317,12 +320,48 @@ public class Test {
                 int val = (int) (Math.random() * n);
                 arrayList.set(index, val);
                 AVLList.set(index, val);
+                record.add(String.format("list.set(%d,  %d);", index, val));
+
+            } else if (control && d < 4 / (double) opCount) {//add(index, t)
+                int size = arrayList.size();
+                int index = (int) (Math.random() * size);
+                int val = (int) (Math.random() * n);
+                arrayList.add(index, val);
+                AVLList.add(index, val);
+                record.add(String.format("list.add( %d,  %d);", index, val));
+            } else if (control && d < 5 / (double) opCount) {//remove(index, t)
+                int size = arrayList.size();
+                if (size == 0) continue;
+                int index = (int) (Math.random() * size);
+
+                Integer i1 = arrayList.remove(index);
+                Integer i2 = AVLList.remove(index);
+
+                record.add(String.format("list.remove(%d);", index));
+
+                if (!i1.equals(i2)) {
+                    System.out.println("AVL 实现 List失败");
+                    return;
+                }
+
             }
 
+            List<Integer> tempList = AVLList.getList();
 
             //校验方法是否成功实现
-            if (!arrayList.equals(AVLList.getList())) {
+            if (!arrayList.equals(tempList)) {
                 System.out.println("AVL 实现 List失败");
+                for (String s : record) {
+                    System.out.println(s);
+                }
+                return;
+            }
+
+            if (!AVLList.isAVL()) {
+                System.out.println("AVL 自平衡失败");
+                for (String s : record) {
+                    System.out.println(s);
+                }
                 return;
             }
 
@@ -337,14 +376,21 @@ public class Test {
     @org.junit.Test
     public void manualTest() {
         AVLTreeList<Integer> list = new AVLTreeList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
 
-        list.get(2);
-
+        list.add(0, 9372);
         System.out.println(list.getList());
+
+        list.add(0, 7428);
+        System.out.println(list.getList());
+
+        list.add(1, 1770);
+        System.out.println(list.getList());
+
+        list.add(1, 15899);
+        System.out.println(list.getList());
+
+//        ArrayList<Integer> integers = new ArrayList<>();
+//        integers.remove(1)
     }
 
 }
