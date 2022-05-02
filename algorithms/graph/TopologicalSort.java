@@ -24,11 +24,11 @@ public class TopologicalSort {
 
     /**
      * 返回DAG中节点的拓扑排序
+     *
      * @param graph 一个DAG
-     * @param <T> Graph<T>，在这里不会使用到T
      * @return int[graph.size]，存放了节点拓扑排序后的顺序;如果graph不为DAG，则返回null
      */
-    public static <T> int[] solve(Graph<T> graph) {
+    public static int[] solve(Graph<?> graph) {
         if (graph == null)
             return null;
         int n = graph.getSize();
