@@ -281,11 +281,12 @@ public class Test {
 
     @org.junit.Test
     public void testAVLList() {
-        int opCount = 5;//  AVLTreeList支持的List方法数量
+        int opCount = 6;//  AVLTreeList支持的List方法数量
         int n = 30000;
 
         ArrayList<Integer> arrayList = new ArrayList<>();
-        AVLTreeList<Integer> AVLList = new AVLTreeList<>();
+        AVLTreeList<Integer> AVLList = new AVLTreeList<>(Integer::compareTo);
+
         ArrayList<String> record = new ArrayList<>();//记录所有行为
 
         boolean control = true;
@@ -343,7 +344,24 @@ public class Test {
                     System.out.println("AVL 实现 List失败");
                     return;
                 }
+            } else if (control && d < 6 / (double) opCount) {//max(from)
+                int size = arrayList.size();
+                if (size == 0) continue;
+                int from = (int) (Math.random() * size);
 
+                Integer i1 = AVLList.max(from);
+
+                Integer i2 = arrayList.get(from);
+                for (int j = from; j < arrayList.size(); j++) {
+                    if (Integer.compare(arrayList.get(j), i2) > 0) {
+                        i2 = arrayList.get(j);
+                    }
+                }
+
+                if (!i1.equals(i2)) {
+                    System.out.println("AVL 实现 List失败");
+                    return;
+                }
             }
 
             List<Integer> tempList = AVLList.getList();
@@ -375,22 +393,7 @@ public class Test {
     //人工测试某个数据结构
     @org.junit.Test
     public void manualTest() {
-        AVLTreeList<Integer> list = new AVLTreeList<>();
 
-        list.add(0, 9372);
-        System.out.println(list.getList());
-
-        list.add(0, 7428);
-        System.out.println(list.getList());
-
-        list.add(1, 1770);
-        System.out.println(list.getList());
-
-        list.add(1, 15899);
-        System.out.println(list.getList());
-
-//        ArrayList<Integer> integers = new ArrayList<>();
-//        integers.remove(1)
     }
 
 }

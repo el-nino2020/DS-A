@@ -1,7 +1,7 @@
 package data_structures.tree;
 
-import javax.xml.bind.annotation.XmlIDREF;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -10,6 +10,7 @@ import java.util.function.Consumer;
  *
  * @param <T> 序列中存放的元素
  */
+@SuppressWarnings({"unchecked", "unused"})
 public class AVLTreeList<T> {
     /**
      * AVL树实现List接口的节点，与实现Map接口的节点不同
@@ -27,17 +28,19 @@ public class AVLTreeList<T> {
         int leftTreeSize;
         int rightTreeSize;
 
-        public Node() {
-        }
+        //以下是拓展方法所需要的subtree property
+        E max;
 
         public Node(E val) {
             this.val = val;
+            max = val;
         }
 
         public Node(E val, Node<E> left, Node<E> right) {
             this.val = val;
             this.left = left;
             this.right = right;
+            max = val;
         }
 
         /**
@@ -67,14 +70,28 @@ public class AVLTreeList<T> {
         private static <G> int size(Node<G> node) {
             return node == null ? 0 : 1 + leftTreeSize(node) + rightTreeSize(node);
         }
+
+        /**
+         * 返回以当前节点为根节点的树中最大的元素
+         */
+        private static <G> G max(Node<G> node) {
+            return node == null ? null : node.max;
+        }
     }
 
     private Node<T> root;
     private int size;
 
+    //拓展功能使用到的属性
+    //拓展方法如下:max(int)
+    private Comparator<T> comp;
+
     public AVLTreeList() {
     }
 
+    public AVLTreeList(Comparator<T> comp) {
+        this.comp = comp;
+    }
 
     /**
      * @param node 需要左转的树的根节点
@@ -152,6 +169,10 @@ public class AVLTreeList<T> {
         node.height = Math.max(Node.height(node.left), Node.height(node.right)) + 1;
         node.leftTreeSize = Node.size(node.left);
         node.rightTreeSize = Node.size(node.right);
+
+        if (compInitialized()) {
+            node.max = max(node.val, Node.max(node.left), Node.max(node.right));
+        }
     }
 
 
@@ -186,7 +207,7 @@ public class AVLTreeList<T> {
      * 在以node为根节点的二叉树中插入t，位置为中序遍历的第index个
      * 这个方法的实现参考了
      * https://www.nayuki.io/res/avl-tree-list/AvlTreeList.java
-     * 中的insertAt方法
+     * 中的insertAt方法,在空的叶节点位置上添加是最方便的做法
      *
      * @param node  待插入元素的二叉树的根节点
      * @param t     待插入的元素
@@ -286,24 +307,6 @@ public class AVLTreeList<T> {
     }
 
     /**
-     * 将索引 index 处的元素设置为newVal
-     * 时间复杂度为O(log(n))
-     *
-     * @param index 元素在List中的索引
-     * @return index处原先的元素
-     * @throws IndexOutOfBoundsException index越界
-     */
-    public T set(int index, T newVal) throws IndexOutOfBoundsException {
-        if (index < 0 || index >= size)
-            throw new IndexOutOfBoundsException();
-
-        Node<T> node = get(root, index);
-        T ans = node.val;
-        node.val = newVal;
-        return ans;
-    }
-
-    /**
      * 返回在以node为根节点的二叉树中，中序遍历第index个的节点,
      * 时间复杂度为O(log(n))
      */
@@ -315,6 +318,112 @@ public class AVLTreeList<T> {
         } else {
             return get(node.right, index - Node.leftTreeSize(node) - 1);
         }
+    }
+
+
+    /**
+     * 将索引 index 处的元素设置为newVal
+     * 时间复杂度为O(log(n))
+     *
+     * @param index 元素在List中的索引
+     * @return index处原先的元素
+     * @throws IndexOutOfBoundsException index越界
+     */
+    public T set(int index, T newVal) throws IndexOutOfBoundsException {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException();
+        T oldVal = null;
+        if (!compInitialized()) {
+            Node<T> node = get(root, index);
+            oldVal = node.val;
+            node.val = newVal;
+        } else {//为了配合拓展功能，需要重新写一个新的set功能
+            oldVal = set(root, index, newVal);
+        }
+        return oldVal;
+    }
+
+    /**
+     * 与get(Node<T>,int)的区别仅在于会对路径上的所有节点调用
+     * updateSubtreeProperty方法，以配合拓展功能
+     *
+     * @return index处修改前的值
+     */
+    private T set(Node<T> node, int index, T newVal) {
+        T oldVal = null;
+        if (index == Node.leftTreeSize(node)) {
+            oldVal = node.val;
+            node.val = newVal;
+        } else if (index < Node.leftTreeSize(node)) {
+            oldVal = set(node.left, index, newVal);
+        } else {
+            oldVal = set(node.right, index - Node.leftTreeSize(node) - 1, newVal);
+        }
+        updateSubtreeProperty(node);
+        return oldVal;
+    }
+
+
+    /**
+     * 返回[from, size)中元素的最大值，时间复杂度为O(log(n)).
+     * 所谓最大值，是这样一个元素t，它与集合中的其他元素u都有如下关系：
+     * comp.compareAt(t, u) >= 0.
+     * 如果创建对象时没有使用AVLTreeList(Comparator<T> comp)构造器，
+     * 则返回null.
+     * 建议与compInitialized()配合使用
+     *
+     * @param from 起始索引
+     * @return [from, size)中元素的最大值，或者null
+     * @throws IndexOutOfBoundsException from的范围为 0 <= from && from < size
+     */
+    public T max(int from) throws IndexOutOfBoundsException {
+        if (!compInitialized()) return null;
+        if (from < 0 || from >= size) throw new IndexOutOfBoundsException();
+        return max(root, from);
+    }
+
+    //找到所有比from大的右子树中最大的值，要充分利用subtree property
+    private T max(Node<T> node, int from) {
+        if (from == Node.leftTreeSize(node)) {
+            T rightMax = Node.max(node.right);
+            return max(rightMax, node.val);
+        } else if (from < Node.leftTreeSize(node)) {
+            T leftMax = max(node.left, from);
+            T rightMax = Node.max(node.right);
+
+            return max(leftMax, rightMax, node.val);
+        } else {
+            return max(node.right, from - Node.leftTreeSize(node) - 1);
+        }
+    }
+
+    /**
+     * 返回所有元素中的最大值，如果元素都为null，则返回null
+     * 时间复杂度为o(n)
+     */
+    private T max(T... args) {
+        ArrayList<T> list = new ArrayList<>();
+
+        for (T t : args) {
+            if (t != null) list.add(t);
+        }
+        if (list.size() == 0) return null;
+
+        T ans = list.get(0);
+        for (T t : list) {
+            if (comp.compare(t, ans) > 0) ans = t;
+        }
+
+        return ans;
+    }
+
+    public boolean compInitialized() {
+        return comp != null;
+    }
+
+    public void clear() {
+        root = null;
+        size = 0;
     }
 
 
@@ -368,11 +477,10 @@ public class AVLTreeList<T> {
         return isAVL(root);
     }
 
-
     /**
      * 检验以node为根节点的树是否为一棵AVL树
      */
-    private boolean isAVL(Node node) {
+    private boolean isAVL(Node<T> node) {
         if (node == null) return true;
         //node是一棵AVL树
         return (Math.abs(Node.height(node.left) - Node.height(node.right)) <= 1)
