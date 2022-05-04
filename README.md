@@ -37,6 +37,8 @@
     - 邻接矩阵、邻接表 adjacent matrix & adjacent list
     - 深度优先遍历 depth first search, DFS
     - 广度优先遍历 breath first search, BFS
+8. 堆 heap
+    - binary heap
     
     
 
@@ -76,6 +78,8 @@
         - Kruskal
     2. 最短路径 shortest path
         - Dijkstra
+        - DAG relaxation
+        - Bellman-Ford
         - Floyd    
     3. 拓扑排序 topological sort
     
