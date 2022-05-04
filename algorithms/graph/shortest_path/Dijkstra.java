@@ -105,7 +105,7 @@ public class Dijkstra {
      * @param chars chars[i]表示第i个节点的别名，方便打印
      * @param start 最短路径的起始点的索引
      */
-    private static void printAns(int[][] ans, char[] chars, int start) {
+     static void printAns(int[][] ans, char[] chars, int start) {
         int[] dist = ans[0];
         int[] prev = ans[1];
 

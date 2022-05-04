@@ -68,7 +68,7 @@ public class DAGRelaxation {
      * 这里主要是防止整数溢出，且假设 a, b都不为Integer.MAX_VALUE的情况下，
      * a + b <= Integer.MAX_VALUE
      */
-    private static int mathAdd(int a, int b) {
+     static int mathAdd(int a, int b) {
         if (a == Integer.MAX_VALUE || b == Integer.MAX_VALUE)
             return Integer.MAX_VALUE;
 
