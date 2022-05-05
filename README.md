@@ -32,7 +32,7 @@
     - 二叉排序树 binary sort tree
     - AVL树 AVL tree
         - AVL树继承BST，继而实现Map、Set接口 AVL tree that implements Map(Set) interface
-        - :star: AVL树实现List接口 AVL tree that implements List interface
+        - :star: AVL树实现List接口 AVL tree that implements List interface / Sequence AVL
 7. 图 graph
     - 邻接矩阵、邻接表 adjacent matrix & adjacent list
     - 深度优先遍历 depth first search, DFS
@@ -80,6 +80,7 @@
         - Dijkstra
         - DAG relaxation
         - Bellman-Ford
+        - Johnson's
         - Floyd    
     3. 拓扑排序 topological sort
     
