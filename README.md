@@ -3,7 +3,7 @@
 - 只是听过算法课不代表掌握了数据结构和算法，关键还是要自己来实现——纸上得来终觉浅，绝知此事要躬行
 - Talk is cheap while codes are real. Only when you realize the data structure or algorithm by yourself can you master it.
 - 使用Java语言实现各种数据结构和算法
-- realize various data structures & algorithms in Java
+- implement various data structures & algorithms in Java
 
 # 学习使用的笔记(Notes)
 1. [Ver1.0](https://github.com/el-nino2020/note-of-learning/blob/main/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%20Ver1.0%20.md)
