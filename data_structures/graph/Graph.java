@@ -227,4 +227,25 @@ public class Graph<D> {
         return ans;
     }
 
+    /**
+     * 扩大一张图的节点数量，增添size个新节点，保留graph所有边
+     * @param graph 原图, graph != null，不然返回null
+     * @param size 增添的节点数，size >= 0 ，不然返回null;如果size == 0，相当于返回一张原图的复制
+     * @return 新图，或者null
+     */
+    public static Graph<?> enlargeGraph(Graph<?> graph, int size) {
+        if (graph == null || size < 0 )
+            return null;
+
+        Graph<Object> ans = new Graph<Object>(graph.size + size);
+
+        for (int i = 0; i < graph.size; i++) {
+            for (int j = 0; j < graph.size; j++) {
+                ans.addEdge(i, j, graph.adjMatrix[i][j], true);
+            }
+        }
+
+        return ans;
+    }
+
 }
