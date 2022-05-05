@@ -85,7 +85,7 @@ public class Dijkstra {
 
             while (neighbours.hasNext()) {
                 int u = neighbours.next(), k;
-                if ((k = dist[index] + graph.getWeight(index, u)) < dist[u]) {
+                if ((k = mathAdd(dist[index], graph.getWeight(index, u))) < dist[u]) {
                     dist[u] = k;
                     prev[u] = index;
                 }
@@ -105,7 +105,7 @@ public class Dijkstra {
      * @param chars chars[i]表示第i个节点的别名，方便打印
      * @param start 最短路径的起始点的索引
      */
-     static void printAns(int[][] ans, char[] chars, int start) {
+    static void printAns(int[][] ans, char[] chars, int start) {
         int[] dist = ans[0];
         int[] prev = ans[1];
 
@@ -125,5 +125,17 @@ public class Dijkstra {
         System.out.println("打印完毕");
         System.out.println("===================================");
 
+    }
+
+    /**
+     * 视Integer.MAX_VALUE为正无穷，根据数学中的定义，其中一个加法数为无穷，结果为无穷
+     * 这里主要是防止整数溢出，且假设 a, b都不为Integer.MAX_VALUE的情况下，
+     * a + b <= Integer.MAX_VALUE
+     */
+    static int mathAdd(int a, int b) {
+        if (a == Integer.MAX_VALUE || b == Integer.MAX_VALUE)
+            return Integer.MAX_VALUE;
+
+        return a + b;
     }
 }
