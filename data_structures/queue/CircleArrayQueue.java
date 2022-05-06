@@ -13,7 +13,7 @@ public class CircleArrayQueue {
     private int[] arr;
 
     public CircleArrayQueue(int capacity) {
-        this.capacity = capacity + 1;
+        this.capacity = capacity ;
         arr = new int[capacity + 1];//总是空出一个存储空间以实现环形队列
 
     }
@@ -81,7 +81,7 @@ public class CircleArrayQueue {
 
 
     public int capacity() {
-        return capacity - 1;//返回的为初始化时输入的容量
+        return capacity ;//返回的为初始化时输入的容量
     }
 
 }
